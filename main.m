@@ -385,7 +385,7 @@ model.sol('sol4').feature('s1').feature('p1').set('plistarr', {'range(500,100,30
 model.sol('sol4').feature('s1').feature('p1').set('pname', {'freq'});
 model.sol('sol4').feature('s1').feature('p1').set('pcontinuationmode', 'no');
 model.sol('sol4').feature('s1').feature('p1').set('preusesol', 'auto');
-model.sol('sol4').runAll;
+%%model.sol('sol4').runAll;
 
 model.batch('p1').set('probesel', 'none');
 model.batch('p1').set('err', true);
@@ -394,7 +394,7 @@ model.batch('p1').set('pname', {'c1' 'c3' 'x0'});
 model.batch('p1').set('control', 'opt');
 model.batch('p1').feature('so1').set('seq', 'sol4');
 model.batch('o1').attach('std4');
-model.batch('o1').run;
+%%model.batch('o1').run;
 
 model.result.dataset('an2_ds1').set('function', 'all');
 model.result.numerical('gev1').set('table', 'tbl1');
