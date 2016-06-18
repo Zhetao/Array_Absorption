@@ -2,7 +2,7 @@ function out = model
 %
 % main.m
 %
-% Model exported on Jun 18 2016, 13:44 by COMSOL 5.2.0.220.
+% Model exported on Jun 18 2016, 13:52 by COMSOL 5.2.0.220.
 
 import com.comsol.model.*
 import com.comsol.model.util.*
@@ -176,10 +176,6 @@ model.physics('acpr2').feature('pwr1').feature('ipf1').selection.set([14 15]);
 model.mesh('mesh3').autoMeshSize(2);
 model.mesh('mesh4').autoMeshSize(2);
 
-model.ode.create('conpar4');
-model.ode.create('conpar8');
-model.ode.create('conpar9');
-
 model.variable('var2').label('With array');
 model.variable('var3').label('Without array');
 
@@ -242,164 +238,5 @@ model.physics('acpr2').feature('pwr1').feature('ipf1').set('pamp', 'exp(-((x+R*s
 
 model.mesh('mesh3').run;
 model.mesh('mesh4').run;
-
-model.ode('conpar4').state({'c1'});
-model.ode('conpar8').state({'c3'});
-model.ode('conpar9').state({'x0'});
-
-model.study.create('std1');
-model.study('std1').create('freq', 'Frequency');
-model.study.create('std2');
-model.study('std2').create('freq', 'Frequency');
-model.study('std2').feature('freq').set('activate', {'acpr' 'on' 'acpr2' 'off'});
-model.study.create('std3');
-model.study('std3').create('freq', 'Frequency');
-model.study('std3').feature('freq').set('activate', {'acpr' 'off' 'acpr2' 'on'});
-model.study.create('std4');
-model.study('std4').create('opt', 'Optimization');
-model.study('std4').create('freq', 'Frequency');
-
-model.sol.create('sol1');
-model.sol('sol1').study('std1');
-model.sol('sol1').attach('std1');
-model.sol('sol1').create('st1', 'StudyStep');
-model.sol('sol1').create('v1', 'Variables');
-model.sol('sol1').create('s1', 'Stationary');
-model.sol('sol1').feature('s1').create('pDef', 'Parametric');
-model.sol('sol1').feature('s1').create('p1', 'Parametric');
-model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
-model.sol('sol1').feature('s1').feature.remove('fcDef');
-model.sol.create('sol2');
-model.sol('sol2').study('std2');
-model.sol('sol2').attach('std2');
-model.sol('sol2').create('st1', 'StudyStep');
-model.sol('sol2').create('v1', 'Variables');
-model.sol('sol2').create('s1', 'Stationary');
-model.sol('sol2').feature('s1').create('pDef', 'Parametric');
-model.sol('sol2').feature('s1').create('p1', 'Parametric');
-model.sol('sol2').feature('s1').create('fc1', 'FullyCoupled');
-model.sol('sol2').feature('s1').feature.remove('fcDef');
-model.sol.create('sol3');
-model.sol('sol3').study('std3');
-model.sol('sol3').attach('std3');
-model.sol('sol3').create('st1', 'StudyStep');
-model.sol('sol3').create('v1', 'Variables');
-model.sol('sol3').create('s1', 'Stationary');
-model.sol('sol3').feature('s1').create('pDef', 'Parametric');
-model.sol('sol3').feature('s1').create('p1', 'Parametric');
-model.sol('sol3').feature('s1').create('fc1', 'FullyCoupled');
-model.sol('sol3').feature('s1').feature.remove('fcDef');
-model.sol.create('sol4');
-model.sol('sol4').study('std4');
-model.sol('sol4').attach('std4');
-model.sol('sol4').create('st1', 'StudyStep');
-model.sol('sol4').create('v1', 'Variables');
-model.sol('sol4').create('s1', 'Stationary');
-model.sol('sol4').feature('s1').create('pDef', 'Parametric');
-model.sol('sol4').feature('s1').create('p1', 'Parametric');
-model.sol('sol4').feature('s1').create('fc1', 'FullyCoupled');
-model.sol('sol4').feature('s1').feature.remove('fcDef');
-
-model.batch.create('o1', 'Optimization');
-model.batch('p1').create('so1', 'Solutionseq');
-model.batch('o1').study('std4');
-model.batch('p1').study('std4');
-
-model.result.dataset.remove('dset1');
-model.result.dataset.remove('dset2');
-model.result.dataset.remove('dset3');
-model.result.dataset.remove('dset4');
-model.result.dataset.remove('dset5');
-model.result.dataset.remove('dset6');
-model.result.dataset.remove('dset7');
-model.result.dataset.remove('dset8');
-
-model.study('std1').label('Combined');
-model.study('std1').feature('freq').set('plist', 'range(500,100,3000)');
-model.study('std2').label('comp1');
-model.study('std2').feature('freq').set('plist', '3000');
-model.study('std3').label('comp2');
-model.study('std3').feature('freq').set('plist', 'range(500,20,3000)');
-model.study('std4').label('Optimization');
-model.study('std4').feature('opt').label('Optimization 2');
-model.study('std4').feature('opt').set('probesel', 'none');
-model.study('std4').feature('opt').set('lbound', {'0.23' '0.2' '0.02'});
-model.study('std4').feature('opt').set('scale', {'1' '1' '1'});
-model.study('std4').feature('opt').set('objectivetype', 'maximization');
-model.study('std4').feature('opt').set('pname', {'c1' 'c3' 'x0'});
-model.study('std4').feature('opt').set('ubound', {'0.5' '0.5' '0.07'});
-model.study('std4').feature('opt').set('optobj', {'comp1.p_with/comp2.p_without/26'});
-model.study('std4').feature('opt').set('nsolvemax', '100');
-model.study('std4').feature('opt').set('initval', {'0.30573' '0.28936' '0.04905'});
-model.study('std4').feature('opt').set('optobjEvaluateFor', {'freq'});
-model.study('std4').feature('opt').set('descr', {});
-model.study('std4').feature('freq').set('plist', 'range(500,100,3000)');
-
-model.sol('sol1').attach('std1');
-model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
-model.sol('sol1').feature('s1').feature('pDef').set('punit', {'Hz'});
-model.sol('sol1').feature('s1').feature('pDef').set('plistarr', {'range(500,100,3000)'});
-model.sol('sol1').feature('s1').feature('pDef').set('pname', {'freq'});
-model.sol('sol1').feature('s1').feature('pDef').set('pcontinuationmode', 'no');
-model.sol('sol1').feature('s1').feature('pDef').set('preusesol', 'auto');
-model.sol('sol1').feature('s1').feature('p1').set('punit', {'Hz'});
-model.sol('sol1').feature('s1').feature('p1').set('plistarr', {'range(500,100,3000)'});
-model.sol('sol1').feature('s1').feature('p1').set('pname', {'freq'});
-model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
-model.sol('sol1').feature('s1').feature('p1').set('preusesol', 'auto');
-model.sol('sol1').runAll;
-model.sol('sol2').attach('std2');
-model.sol('sol2').feature('s1').feature('aDef').set('complexfun', true);
-model.sol('sol2').feature('s1').feature('pDef').set('punit', {'Hz'});
-model.sol('sol2').feature('s1').feature('pDef').set('plistarr', {'3000'});
-model.sol('sol2').feature('s1').feature('pDef').set('pname', {'freq'});
-model.sol('sol2').feature('s1').feature('pDef').set('pcontinuationmode', 'no');
-model.sol('sol2').feature('s1').feature('pDef').set('preusesol', 'auto');
-model.sol('sol2').feature('s1').feature('p1').set('punit', {'Hz'});
-model.sol('sol2').feature('s1').feature('p1').set('plistarr', {'3000'});
-model.sol('sol2').feature('s1').feature('p1').set('pname', {'freq'});
-model.sol('sol2').feature('s1').feature('p1').set('pcontinuationmode', 'no');
-model.sol('sol2').feature('s1').feature('p1').set('preusesol', 'auto');
-model.sol('sol2').runAll;
-model.sol('sol3').attach('std3');
-model.sol('sol3').feature('s1').feature('aDef').set('complexfun', true);
-model.sol('sol3').feature('s1').feature('pDef').set('punit', {'Hz'});
-model.sol('sol3').feature('s1').feature('pDef').set('plistarr', {'range(500,20,3000)'});
-model.sol('sol3').feature('s1').feature('pDef').set('pname', {'freq'});
-model.sol('sol3').feature('s1').feature('pDef').set('pcontinuationmode', 'no');
-model.sol('sol3').feature('s1').feature('pDef').set('preusesol', 'auto');
-model.sol('sol3').feature('s1').feature('p1').set('punit', {'Hz'});
-model.sol('sol3').feature('s1').feature('p1').set('plistarr', {'range(500,20,3000)'});
-model.sol('sol3').feature('s1').feature('p1').set('pname', {'freq'});
-model.sol('sol3').feature('s1').feature('p1').set('pcontinuationmode', 'no');
-model.sol('sol3').feature('s1').feature('p1').set('preusesol', 'auto');
-model.sol('sol3').runAll;
-model.sol('sol4').attach('std4');
-model.sol('sol4').feature('v1').feature('comp2_p2').label('comp2.p2');
-model.sol('sol4').feature('v1').feature('comp1_p').label('comp1.p');
-model.sol('sol4').feature('v1').feature('conpar4').label('conpar4');
-model.sol('sol4').feature('v1').feature('conpar8').label('conpar8');
-model.sol('sol4').feature('v1').feature('conpar9').label('conpar9');
-model.sol('sol4').feature('s1').set('probesel', 'none');
-model.sol('sol4').feature('s1').feature('aDef').set('complexfun', true);
-model.sol('sol4').feature('s1').feature('pDef').set('punit', {'Hz'});
-model.sol('sol4').feature('s1').feature('pDef').set('plistarr', {'range(500,100,3000)'});
-model.sol('sol4').feature('s1').feature('pDef').set('pname', {'freq'});
-model.sol('sol4').feature('s1').feature('pDef').set('pcontinuationmode', 'no');
-model.sol('sol4').feature('s1').feature('pDef').set('preusesol', 'auto');
-model.sol('sol4').feature('s1').feature('p1').set('punit', {'Hz'});
-model.sol('sol4').feature('s1').feature('p1').set('plistarr', {'range(500,100,3000)'});
-model.sol('sol4').feature('s1').feature('p1').set('pname', {'freq'});
-model.sol('sol4').feature('s1').feature('p1').set('pcontinuationmode', 'no');
-model.sol('sol4').feature('s1').feature('p1').set('preusesol', 'auto');
-
-model.batch('p1').set('probesel', 'none');
-model.batch('p1').set('err', true);
-model.batch('p1').set('plistarr', {'0.29986133244231117' '0.2909834565773322' '0.04950793356702737'});
-model.batch('p1').set('pname', {'c1' 'c3' 'x0'});
-model.batch('p1').set('control', 'opt');
-model.batch('p1').feature('so1').set('seq', 'sol4');
-model.batch('o1').attach('std4');
-model.batch('o1').run;
 
 out = model;
