@@ -2,7 +2,7 @@ function out = model
 %
 % main.m
 %
-% Model exported on Jun 18 2016, 15:45 by COMSOL 5.2.0.220.
+% Model exported on Jun 18 2016, 15:51 by COMSOL 5.2.0.220.
 
 import com.comsol.model.*
 import com.comsol.model.util.*
@@ -295,5 +295,11 @@ model.study('std2').feature('opt').setIndex('pname', 'd_nr_max', 0);
 model.study('std2').feature('opt').setIndex('lbound', '2', 0);
 model.study('std2').feature('opt').setIndex('ubound', '6', 0);
 model.study('std2').feature('opt').set('multiobjective', 'sum');
+
+model.label('optimization.mph');
+
+model.comments(['Optimization\n\nOptimization\n\nOptimization\n\nMy normal absorption\n\n']);
+
+model.study('std2').feature('opt').setIndex('optobj', 'acpr1.p_with/acpr.p2_without/13', 0);
 
 out = model;
