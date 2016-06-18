@@ -2,7 +2,7 @@ function out = model
 %
 % main.m
 %
-% Model exported on Jun 17 2016, 21:47 by COMSOL 5.2.0.220.
+% Model exported on Jun 17 2016, 21:54 by COMSOL 5.2.0.220.
 
 import com.comsol.model.*
 import com.comsol.model.util.*
@@ -502,6 +502,6 @@ model.result('pg6').run;
 
 model.func('an2').set('expr', '1+d_nr_max/2+d_nr(floor(x/d)*d+0.04859)');
 model.func('wv1').set('smoothactive', 'off');
-model.func('an2').set('expr', '1+d_nr_max/2+d_nr(floor(x/d)*d)');
+model.func('an2').set('expr', '1+d_nr_max/2+d_nr(floor((x+period/2)/d)*d)');
 
 out = model;
