@@ -2,7 +2,7 @@ function out = model
 %
 % main.m
 %
-% Model exported on Jun 18 2016, 13:52 by COMSOL 5.2.0.220.
+% Model exported on Jun 18 2016, 14:25 by COMSOL 5.2.0.220.
 
 import com.comsol.model.*
 import com.comsol.model.util.*
@@ -13,7 +13,7 @@ model.modelPath('/home/zhetao/Research/Array_absorption_git');
 
 model.label('optimization.mph');
 
-model.comments(['Optimization\n\nMy normal absorption\n\n']);
+model.comments('Optimization\n\nMy normal absorption\n\n');
 
 model.param.set('a', '0.0003[m]');
 model.param.set('b', '0.26');
@@ -228,15 +228,245 @@ model.cpl('intop6').label('Integration right 2');
 model.cpl('intop6').set('opname', 'intright2');
 
 model.physics('acpr').feature('pwr1').feature('ipf1').set('IncidentPressureFieldType', 'UserDefined');
-model.physics('acpr').feature('pwr1').feature('ipf1').set('dir', {'sin(theta_i)'; '-cos(theta_i)'; '0'});
+model.physics('acpr').feature('pwr1').feature('ipf1').set('dir', {'sin(theta_i)' '-cos(theta_i)' '0'});
 model.physics('acpr').feature('pwr1').feature('ipf1').set('p_i', 'exp(-((x+R*sin(theta_i))^2+(y-R*cos(theta_i))^2)/(sigma^2))*exp(-1i*acpr.k*(sin(theta_i)*x-cos(theta_i)*y))');
 model.physics('acpr').feature('pwr1').feature('ipf1').set('pamp', 'exp(-((y-0.4+D/2-(25*0.025685-0.4*tan(theta_i))/tan(theta_i))/0.5)^2)');
 model.physics('acpr2').feature('pwr1').feature('ipf1').set('IncidentPressureFieldType', 'UserDefined');
-model.physics('acpr2').feature('pwr1').feature('ipf1').set('dir', {'sin(theta_i)'; '-cos(theta_i)'; '0'});
+model.physics('acpr2').feature('pwr1').feature('ipf1').set('dir', {'sin(theta_i)' '-cos(theta_i)' '0'});
 model.physics('acpr2').feature('pwr1').feature('ipf1').set('p_i', 'exp(-((x+R*sin(theta_i))^2+(y-R*cos(theta_i))^2)/(sigma^2))*exp(-1i*acpr2.k*(sin(theta_i)*x-cos(theta_i)*y))');
 model.physics('acpr2').feature('pwr1').feature('ipf1').set('pamp', 'exp(-((x+R*sin(theta_i))^2+(y-R*cos(theta_i))^2)/(0.5^2))*exp(-1i*acpr.k*(sin(theta_i)*x-cos(theta_i)*y))');
 
 model.mesh('mesh3').run;
 model.mesh('mesh4').run;
+
+model.comments(['Untitled\n\nOptimization\n\nMy normal absorption\n\n']);
+model.comments(['Untitled\n\nOptimization\n\nMy normal absorption\n\n']);
+model.comments(['Untitled\n\nOptimization\n\nMy normal absorption\n\n']);
+
+model.variable.create('var4');
+
+model.comments(['Untitled\n\nOptimization\n\nMy normal absorption\n\n']);
+
+model.variable.remove('var4');
+
+model.comments(['Untitled\n\nOptimization\n\nMy normal absorption\n\n']);
+
+model.study.create('std1');
+model.study('std1').create('freq', 'Frequency');
+model.study('std1').feature('freq').activate('acpr', true);
+model.study('std1').feature('freq').activate('acpr2', true);
+model.study('std1').feature('freq').set('showdistribute', false);
+
+model.sol.create('sol1');
+model.sol('sol1').study('std1');
+
+model.study('std1').feature('freq').set('notlistsolnum', 1);
+model.study('std1').feature('freq').set('notsolnum', '1');
+model.study('std1').feature('freq').set('listsolnum', 1);
+model.study('std1').feature('freq').set('solnum', '1');
+
+model.sol('sol1').create('st1', 'StudyStep');
+model.sol('sol1').feature('st1').set('study', 'std1');
+model.sol('sol1').feature('st1').set('studystep', 'freq');
+model.sol('sol1').create('v1', 'Variables');
+model.sol('sol1').feature('v1').set('control', 'freq');
+model.sol('sol1').create('s1', 'Stationary');
+model.sol('sol1').feature('s1').set('stol', 0.001);
+model.sol('sol1').feature('s1').create('p1', 'Parametric');
+model.sol('sol1').feature('s1').feature.remove('pDef');
+model.sol('sol1').feature('s1').feature('p1').set('pname', {'freq'});
+model.sol('sol1').feature('s1').feature('p1').set('plistarr', {''});
+model.sol('sol1').feature('s1').feature('p1').set('punit', {'Hz'});
+model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
+model.sol('sol1').feature('s1').feature('p1').set('preusesol', 'auto');
+model.sol('sol1').feature('s1').feature('p1').set('plot', 'off');
+model.sol('sol1').feature('s1').feature('p1').set('plotgroup', 'Default');
+model.sol('sol1').feature('s1').feature('p1').set('probesel', 'all');
+model.sol('sol1').feature('s1').feature('p1').set('probes', {});
+model.sol('sol1').feature('s1').feature('p1').set('control', 'freq');
+model.sol('sol1').feature('s1').set('control', 'freq');
+model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
+model.sol('sol1').feature('s1').feature('aDef').set('matherr', true);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksize', 1000);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksizeactive', false);
+model.sol('sol1').feature('s1').create('seDef', 'Segregated');
+model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
+model.sol('sol1').feature('s1').feature('fc1').set('linsolver', 'dDef');
+model.sol('sol1').feature('s1').feature.remove('fcDef');
+model.sol('sol1').feature('s1').feature.remove('seDef');
+model.sol('sol1').attach('std1');
+
+model.result.create('pg1', 2);
+model.result('pg1').set('data', 'dset1');
+model.result('pg1').create('surf1', 'Surface');
+model.result('pg1').feature('surf1').set('expr', {'acpr.p_t'});
+model.result('pg1').label('Acoustic Pressure (acpr)');
+model.result.create('pg2', 2);
+model.result('pg2').set('data', 'dset1');
+model.result('pg2').create('surf1', 'Surface');
+model.result('pg2').feature('surf1').set('expr', {'acpr.Lp'});
+model.result('pg2').label('Sound Pressure Level (acpr)');
+model.result.create('pg3', 2);
+model.result('pg3').set('data', 'dset2');
+model.result('pg3').create('surf1', 'Surface');
+model.result('pg3').feature('surf1').set('expr', {'acpr2.p_t'});
+model.result('pg3').label('Acoustic Pressure (acpr2)');
+model.result.create('pg4', 2);
+model.result('pg4').set('data', 'dset2');
+model.result('pg4').create('surf1', 'Surface');
+model.result('pg4').feature('surf1').set('expr', {'acpr2.Lp'});
+model.result('pg4').label('Sound Pressure Level (acpr2)');
+model.result.remove('pg2');
+model.result.remove('pg1');
+model.result.remove('pg4');
+model.result.remove('pg3');
+
+model.study('std1').feature('freq').set('showdistribute', false);
+model.study('std1').feature('freq').set('plist', 'range(600,200,3000)');
+
+model.sol('sol1').study('std1');
+
+model.study('std1').feature('freq').set('notlistsolnum', 1);
+model.study('std1').feature('freq').set('notsolnum', '1');
+model.study('std1').feature('freq').set('listsolnum', 1);
+model.study('std1').feature('freq').set('solnum', '1');
+
+model.sol('sol1').feature.remove('s1');
+model.sol('sol1').feature.remove('v1');
+model.sol('sol1').feature.remove('st1');
+model.sol('sol1').create('st1', 'StudyStep');
+model.sol('sol1').feature('st1').set('study', 'std1');
+model.sol('sol1').feature('st1').set('studystep', 'freq');
+model.sol('sol1').create('v1', 'Variables');
+model.sol('sol1').feature('v1').set('control', 'freq');
+model.sol('sol1').create('s1', 'Stationary');
+model.sol('sol1').feature('s1').set('stol', 0.001);
+model.sol('sol1').feature('s1').create('p1', 'Parametric');
+model.sol('sol1').feature('s1').feature.remove('pDef');
+model.sol('sol1').feature('s1').feature('p1').set('pname', {'freq'});
+model.sol('sol1').feature('s1').feature('p1').set('plistarr', {'range(600,200,3000)'});
+model.sol('sol1').feature('s1').feature('p1').set('punit', {'Hz'});
+model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
+model.sol('sol1').feature('s1').feature('p1').set('preusesol', 'auto');
+model.sol('sol1').feature('s1').feature('p1').set('plot', 'off');
+model.sol('sol1').feature('s1').feature('p1').set('plotgroup', 'Default');
+model.sol('sol1').feature('s1').feature('p1').set('probesel', 'all');
+model.sol('sol1').feature('s1').feature('p1').set('probes', {});
+model.sol('sol1').feature('s1').feature('p1').set('control', 'freq');
+model.sol('sol1').feature('s1').set('control', 'freq');
+model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
+model.sol('sol1').feature('s1').feature('aDef').set('matherr', true);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksize', 1000);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksizeactive', false);
+model.sol('sol1').feature('s1').create('seDef', 'Segregated');
+model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
+model.sol('sol1').feature('s1').feature('fc1').set('linsolver', 'dDef');
+model.sol('sol1').feature('s1').feature.remove('fcDef');
+model.sol('sol1').feature('s1').feature.remove('seDef');
+model.sol('sol1').attach('std1');
+
+model.result.create('pg1', 2);
+model.result('pg1').set('data', 'dset1');
+model.result('pg1').create('surf1', 'Surface');
+model.result('pg1').feature('surf1').set('expr', {'acpr.p_t'});
+model.result('pg1').label('Acoustic Pressure (acpr)');
+model.result.create('pg2', 2);
+model.result('pg2').set('data', 'dset1');
+model.result('pg2').create('surf1', 'Surface');
+model.result('pg2').feature('surf1').set('expr', {'acpr.Lp'});
+model.result('pg2').label('Sound Pressure Level (acpr)');
+model.result.create('pg3', 2);
+model.result('pg3').set('data', 'dset2');
+model.result('pg3').create('surf1', 'Surface');
+model.result('pg3').feature('surf1').set('expr', {'acpr2.p_t'});
+model.result('pg3').label('Acoustic Pressure (acpr2)');
+model.result.create('pg4', 2);
+model.result('pg4').set('data', 'dset2');
+model.result('pg4').create('surf1', 'Surface');
+model.result('pg4').feature('surf1').set('expr', {'acpr2.Lp'});
+model.result('pg4').label('Sound Pressure Level (acpr2)');
+
+model.sol('sol1').runAll;
+
+model.result('pg1').run;
+model.result('pg1').setIndex('looplevel', '5', 0);
+model.result('pg1').run;
+model.result('pg1').setIndex('looplevel', '10', 0);
+model.result('pg1').run;
+
+model.func('an2').set('expr', '1+d_nr_max/2+d_nr(floor(x/d)*d)');
+model.func('wv1').set('smoothactive', 'off');
+model.func('an2').set('expr', '1+d_nr_max/2+d_nr(floor(x/d)*d+period/2)');
+
+model.study('std1').feature('freq').set('showdistribute', false);
+
+model.sol('sol1').study('std1');
+
+model.study('std1').feature('freq').set('notlistsolnum', 1);
+model.study('std1').feature('freq').set('notsolnum', '1');
+model.study('std1').feature('freq').set('listsolnum', 1);
+model.study('std1').feature('freq').set('solnum', '1');
+
+model.sol('sol1').feature.remove('s1');
+model.sol('sol1').feature.remove('v1');
+model.sol('sol1').feature.remove('st1');
+model.sol('sol1').create('st1', 'StudyStep');
+model.sol('sol1').feature('st1').set('study', 'std1');
+model.sol('sol1').feature('st1').set('studystep', 'freq');
+model.sol('sol1').create('v1', 'Variables');
+model.sol('sol1').feature('v1').set('control', 'freq');
+model.sol('sol1').create('s1', 'Stationary');
+model.sol('sol1').feature('s1').set('stol', 0.001);
+model.sol('sol1').feature('s1').create('p1', 'Parametric');
+model.sol('sol1').feature('s1').feature.remove('pDef');
+model.sol('sol1').feature('s1').feature('p1').set('pname', {'freq'});
+model.sol('sol1').feature('s1').feature('p1').set('plistarr', {'range(600,200,3000)'});
+model.sol('sol1').feature('s1').feature('p1').set('punit', {'Hz'});
+model.sol('sol1').feature('s1').feature('p1').set('pcontinuationmode', 'no');
+model.sol('sol1').feature('s1').feature('p1').set('preusesol', 'auto');
+model.sol('sol1').feature('s1').feature('p1').set('plot', 'off');
+model.sol('sol1').feature('s1').feature('p1').set('plotgroup', 'pg1');
+model.sol('sol1').feature('s1').feature('p1').set('probesel', 'all');
+model.sol('sol1').feature('s1').feature('p1').set('probes', {});
+model.sol('sol1').feature('s1').feature('p1').set('control', 'freq');
+model.sol('sol1').feature('s1').set('control', 'freq');
+model.sol('sol1').feature('s1').feature('aDef').set('complexfun', true);
+model.sol('sol1').feature('s1').feature('aDef').set('matherr', true);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksize', 1000);
+model.sol('sol1').feature('s1').feature('aDef').set('blocksizeactive', false);
+model.sol('sol1').feature('s1').create('seDef', 'Segregated');
+model.sol('sol1').feature('s1').create('fc1', 'FullyCoupled');
+model.sol('sol1').feature('s1').feature('fc1').set('linsolver', 'dDef');
+model.sol('sol1').feature('s1').feature.remove('fcDef');
+model.sol('sol1').feature('s1').feature.remove('seDef');
+model.sol('sol1').attach('std1');
+model.sol('sol1').runAll;
+
+model.result('pg1').run;
+model.result.create('pg5', 'PlotGroup2D');
+model.result('pg5').run;
+model.result('pg5').create('surf1', 'Surface');
+model.result.dataset.create('join1', 'Join');
+model.result.dataset('join1').set('data', 'dset1');
+model.result.dataset('join1').set('data2', 'dset2');
+model.result.dataset('join1').set('method', 'explicit');
+model.result('pg3').run;
+model.result('pg5').run;
+model.result('pg5').feature('surf1').set('expr', 'data1(acpr.p_t)-data2(acpr2.p_t)');
+model.result('pg5').run;
+model.result('pg5').set('data', 'join1');
+model.result('pg5').run;
+model.result('pg5').run;
+model.result('pg5').feature('surf1').set('rangecoloractive', 'on');
+model.result('pg5').feature('surf1').set('rangecolormin', '-1');
+model.result('pg5').feature('surf1').set('rangecolormax', '1');
+model.result('pg5').run;
+model.result('pg5').run;
+model.result('pg5').setIndex('looplevel', '5', 0);
+model.result('pg5').run;
+model.result('pg5').setIndex('looplevel', '9', 0);
+model.result('pg5').run;
+model.result('pg5').setIndex('looplevel', '11', 0);
+model.result('pg5').run;
 
 out = model;
