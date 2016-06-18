@@ -2,7 +2,7 @@ function out = model
 %
 % main.m
 %
-% Model exported on Jun 18 2016, 15:51 by COMSOL 5.2.0.220.
+% Model exported on Jun 18 2016, 15:55 by COMSOL 5.2.0.220.
 
 import com.comsol.model.*
 import com.comsol.model.util.*
@@ -301,5 +301,94 @@ model.label('optimization.mph');
 model.comments(['Optimization\n\nOptimization\n\nOptimization\n\nMy normal absorption\n\n']);
 
 model.study('std2').feature('opt').setIndex('optobj', 'acpr1.p_with/acpr.p2_without/13', 0);
+model.study('std2').feature('freq').set('showdistribute', false);
+
+model.sol.create('sol2');
+model.sol('sol2').study('std2');
+
+model.study('std2').feature('freq').set('notlistsolnum', 1);
+model.study('std2').feature('freq').set('notsolnum', '1');
+model.study('std2').feature('freq').set('listsolnum', 1);
+model.study('std2').feature('freq').set('solnum', '1');
+
+model.sol('sol2').create('st1', 'StudyStep');
+model.sol('sol2').feature('st1').set('study', 'std2');
+model.sol('sol2').feature('st1').set('studystep', 'freq');
+model.sol('sol2').create('v1', 'Variables');
+model.sol('sol2').feature('v1').set('control', 'freq');
+model.sol('sol2').create('s1', 'Stationary');
+model.sol('sol2').feature('s1').set('stol', 0.001);
+model.sol('sol2').feature('s1').create('p1', 'Parametric');
+model.sol('sol2').feature('s1').feature.remove('pDef');
+model.sol('sol2').feature('s1').feature('p1').set('pname', {'freq'});
+model.sol('sol2').feature('s1').feature('p1').set('plistarr', {'range(600,200,3000)'});
+model.sol('sol2').feature('s1').feature('p1').set('punit', {'Hz'});
+model.sol('sol2').feature('s1').feature('p1').set('pcontinuationmode', 'no');
+model.sol('sol2').feature('s1').feature('p1').set('preusesol', 'auto');
+model.sol('sol2').feature('s1').feature('p1').set('plot', 'off');
+model.sol('sol2').feature('s1').feature('p1').set('plotgroup', 'Default');
+model.sol('sol2').feature('s1').feature('p1').set('probesel', 'all');
+model.sol('sol2').feature('s1').feature('p1').set('probes', {});
+model.sol('sol2').feature('s1').feature('p1').set('control', 'freq');
+model.sol('sol2').feature('s1').set('control', 'freq');
+model.sol('sol2').feature('s1').feature('aDef').set('complexfun', true);
+model.sol('sol2').feature('s1').feature('aDef').set('matherr', true);
+model.sol('sol2').feature('s1').feature('aDef').set('blocksize', 1000);
+model.sol('sol2').feature('s1').feature('aDef').set('blocksizeactive', false);
+model.sol('sol2').feature('s1').create('seDef', 'Segregated');
+model.sol('sol2').feature('s1').create('fc1', 'FullyCoupled');
+model.sol('sol2').feature('s1').feature('fc1').set('linsolver', 'dDef');
+model.sol('sol2').feature('s1').feature.remove('fcDef');
+model.sol('sol2').feature('s1').feature.remove('seDef');
+model.sol('sol2').attach('std2');
+
+model.batch.create('o1', 'Optimization');
+model.batch('o1').study('std2');
+model.batch('p1').study('std2');
+model.batch('o1').attach('std2');
+model.batch('p1').create('so1', 'Solutionseq');
+model.batch('p1').feature('so1').set('seq', 'sol2');
+model.batch('p1').feature('so1').set('store', 'off');
+model.batch('p1').feature('so1').set('clear', 'on');
+model.batch('p1').feature('so1').set('psol', 'none');
+model.batch('p1').attach('std2');
+model.batch('p1').set('optimization', 'o1');
+model.batch('p1').set('err', 'on');
+model.batch('p1').set('control', 'opt');
+model.batch('o1').set('parametricjobs', {'p1'});
+
+model.result.create('pg1', 2);
+model.result('pg1').set('data', 'dset1');
+model.result('pg1').create('surf1', 'Surface');
+model.result('pg1').feature('surf1').set('expr', {'acpr.p_t'});
+model.result('pg1').label('Acoustic Pressure (acpr)');
+model.result.create('pg2', 2);
+model.result('pg2').set('data', 'dset1');
+model.result('pg2').create('surf1', 'Surface');
+model.result('pg2').feature('surf1').set('expr', {'acpr.Lp'});
+model.result('pg2').label('Sound Pressure Level (acpr)');
+model.result.create('pg3', 2);
+model.result('pg3').set('data', 'dset2');
+model.result('pg3').create('surf1', 'Surface');
+model.result('pg3').feature('surf1').set('expr', {'acpr2.p_t'});
+model.result('pg3').label('Acoustic Pressure (acpr2)');
+model.result.create('pg4', 2);
+model.result('pg4').set('data', 'dset2');
+model.result('pg4').create('surf1', 'Surface');
+model.result('pg4').feature('surf1').set('expr', {'acpr2.Lp'});
+model.result('pg4').label('Sound Pressure Level (acpr2)');
+model.result.remove('pg2');
+model.result.remove('pg1');
+model.result.remove('pg4');
+model.result.remove('pg3');
+
+model.study('std2').feature('opt').set('probewindow', '');
+model.study('std1').feature('freq').set('showdistribute', false);
+model.study('std2').feature('opt').setIndex('optobj', 'acpr1.p_with/acpr2.p_without/13', 0);
+
+model.label('optimization.mph');
+
+model.study('std2').feature('freq').set('showdistribute', false);
+model.study('std2').feature('opt').setIndex('optobj', 'comp1.p_with/comp2.p_without/13', 0);
 
 out = model;
