@@ -1,0 +1,10 @@
+function res = opt
+f = @(c)absSum(c(1),c(2),c(3),c(4))
+c0 = [0,0,0,0];
+lb = [-0.5,-0.5,-0.5,-0.5];
+ub = [0.5,0.5,0.5,0.5];
+A = [];
+b = [];
+Aeq = [];
+beq = [];
+c = fmincon(f,c0,A,b,Aeq,beq,lb,ub)

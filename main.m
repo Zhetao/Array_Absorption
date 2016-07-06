@@ -366,8 +366,8 @@ model.physics('acpr2').feature('pwr1').feature('ipf1').set('dir', {'sin(theta_i)
 model.physics('acpr2').feature('pwr1').feature('ipf1').set('p_i', 'exp(-((x+R*sin(theta_i))^2+(y-R*cos(theta_i))^2)/(sigma^2))*exp(-1i*acpr2.k*(sin(theta_i)*x-cos(theta_i)*y))');
 model.physics('acpr2').feature('pwr1').feature('ipf1').set('pamp', 'exp(-((x+R*sin(theta_i))^2+(y-R*cos(theta_i))^2)/(0.5^2))*exp(-1i*acpr.k*(sin(theta_i)*x-cos(theta_i)*y))');
 
-model.mesh('mesh3').run;
-model.mesh('mesh4').run;
+%model.mesh('mesh3').run;
+%model.mesh('mesh4').run;
 
 model.study.create('std1');
 model.study('std1').create('param', 'Parametric');
