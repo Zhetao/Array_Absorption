@@ -12,5 +12,6 @@ for i=[200,260,320,380,440,600,900,1200,1500,1800,2100,2400,2700,3000];
     %display(model.mphglobal('R'))
     list = [list, temp];
 end
+%display(num2str(c1)+' '+num2str(c2)+' '+num2str(c3)+' '+num2str(c4))
 display(list)
 goal = -sum(list);
